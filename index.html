@@ -28,7 +28,7 @@
           <video class="scene-video" id="transition-video" preload="auto" muted playsinline aria-hidden="true">
             <source src="./backg/fon.mp4" type="video/mp4" />
           </video>
-          <audio id="transition-audio" preload="auto" aria-hidden="true">
+          <audio id="transition-audio" preload="auto" loop aria-hidden="true">
             <source src="./backg/fon2.mp3" type="audio/mpeg" />
           </audio>
           <img class="scene-image end-image" id="end-image" src="./backg/end.png" width="1920" height="1080"
@@ -102,20 +102,20 @@
           <p>50 вопросов по материалам зачёта</p>
         </div>
       </div>
-      <a class="antique-button meet-button" id="join-meet" href="#meet-link" aria-disabled="true"><svg width="20"
+      <a class="antique-button meet-button" id="join-meet" href="https://meet.google.com/tvm-rwvs-bqi" target="_blank" rel="noopener noreferrer"><svg width="20"
           height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <rect x="3" y="6" width="12" height="12" rx="2" />
           <path d="m15 10 6-3v10l-6-3" />
         </svg>Присоединиться к Google Meet<span aria-hidden="true">↗</span></a>
       <div class="link-editor"><label for="meet-link">Ссылка на нашу встречу</label>
-        <div class="link-input-row"><input id="meet-link" type="url" placeholder="https://meet.google.com/…"
+        <div class="link-input-row"><input id="meet-link" type="url" placeholder="https://meet.google.com/…" value="https://meet.google.com/tvm-rwvs-bqi"
             spellcheck="false" autocomplete="off" aria-describedby="link-status" /><button type="button" id="copy-link"
             aria-label="Скопировать ссылку Google Meet" title="Скопировать ссылку"><svg width="19" height="19"
               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
               <rect x="8" y="8" width="12" height="12" rx="2" />
               <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
             </svg></button></div>
-        <p class="link-status" id="link-status" role="status">Вставьте ссылку Google Meet, чтобы присоединиться.</p>
+        <p class="link-status" id="link-status" role="status">Ссылка готова. До встречи в Google Meet!</p>
       </div>
       <p class="letter-signoff">До встречи на страницах истории!</p>
     </article>

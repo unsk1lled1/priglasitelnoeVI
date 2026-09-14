@@ -5,5 +5,5 @@ window.INVITATION = {
   participant: 'Калмағанбет Асель',
   date: '16 сентября 2026 (среда)',
   time: '20:00',
-  meetUrl: '',
+  meetUrl: 'https://meet.google.com/tvm-rwvs-bqi',
 };

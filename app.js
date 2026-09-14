@@ -4,10 +4,9 @@
   const experience = $('experience');
   const video = $('transition-video');
   const soundtrack = $('transition-audio');
-  const SOUND_FADE_SECONDS = 2.5;
+  const BG_VOLUME = 0.15;
   let soundContext;
   let soundGain;
-  let soundAnimation;
   const dialog = $('invitation-dialog');
   const feather = $('feather-button');
   const featherImage = $('feather-image');
@@ -22,27 +21,15 @@
   let alphaPixels;
   let previousOverflow = '';
 
-  function updateSoundFade() {
-    const end = Math.min(soundtrack.duration || Infinity, video.duration || Infinity);
-    const fadeLength = Math.min(SOUND_FADE_SECONDS, end);
-    const remaining = Math.max(0, Math.min(1, (end - soundtrack.currentTime) / fadeLength));
-    const volume = Number.isFinite(remaining) ? remaining * remaining * (3 - 2 * remaining) : 1;
-    if (soundGain) soundGain.gain.value = volume;
-    else soundtrack.volume = volume;
-  }
-  function animateSoundFade() {
-    cancelAnimationFrame(soundAnimation);
-    updateSoundFade();
-    if (!soundtrack.paused && !soundtrack.ended) soundAnimation = requestAnimationFrame(animateSoundFade);
+  function setVolume(v) {
+    if (soundGain) soundGain.gain.value = v;
+    else soundtrack.volume = v;
   }
   function stopSound() {
     soundtrack.pause();
-    cancelAnimationFrame(soundAnimation);
   }
   function startSound() {
-    stopSound();
     soundtrack.currentTime = 0;
-    // GainNode also supports fading on mobile browsers that ignore media.volume.
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!soundContext && AudioContext) {
       try {
@@ -52,18 +39,10 @@
         source.connect(soundGain).connect(soundContext.destination);
       } catch { /* Fall back to media volume when Web Audio is unavailable. */ }
     }
-    updateSoundFade();
+    setVolume(BG_VOLUME);
     soundContext?.resume().catch(() => {});
-    // Both play calls run directly within the feather's user gesture.
     soundtrack.play().catch(() => {});
   }
-  soundtrack.addEventListener('playing', animateSoundFade);
-  soundtrack.addEventListener('timeupdate', updateSoundFade);
-  soundtrack.addEventListener('ended', () => {
-    cancelAnimationFrame(soundAnimation);
-    if (soundGain) soundGain.gain.value = 0;
-    else soundtrack.volume = 0;
-  });
 
   // Read the original PNG alpha only for hit testing. The displayed file is unchanged.
   function prepareFeatherHitArea() {
@@ -118,7 +97,6 @@
     clearTimeout(stallTimer);
     state = 'ending';
     video.pause();
-    stopSound();
     if (frameCallback !== undefined) video.cancelVideoFrameCallback?.(frameCallback);
     $('start-content').setAttribute('aria-hidden', 'true');
     $('start-content').inert = true;
@@ -163,13 +141,7 @@
   });
   video.addEventListener('playing', () => {
     clearTimeout(stallTimer);
-    if ((state === 'starting' || state === 'playing') && (!Number.isFinite(soundtrack.duration) || video.currentTime < soundtrack.duration)) {
-      if (Math.abs(soundtrack.currentTime - video.currentTime) > .25) soundtrack.currentTime = video.currentTime;
-      updateSoundFade();
-      if (soundtrack.paused) soundtrack.play().catch(() => {});
-    }
   });
-  video.addEventListener('waiting', stopSound);
   video.addEventListener('waiting', armStallRecovery);
   video.addEventListener('stalled', armStallRecovery);
   video.addEventListener('timeupdate', () => {
