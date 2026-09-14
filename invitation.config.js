@@ -3,7 +3,7 @@
 window.INVITATION = {
   firstParticipant: 'Еркеназ Кадырбекова',
   participant: 'Калмағанбет Асель',
-  date: '16 сентября 2026 (среда)',
+  date: '17 сентября 2026 (четверг)',
   time: '20:00',
   meetUrl: 'https://meet.google.com/tvm-rwvs-bqi',
 };
