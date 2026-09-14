@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111f26" />
+  <meta name="description" content="Личное приглашение на парную работу по всемирной истории. Небольшое путешествие по эпохам, событиям и цивилизациям." />
+  <title>Всемирная история · Парная работа</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23111f26'/%3E%3Cpath d='M20 5 24 16 35 20 24 24 20 35 16 24 5 20 16 16Z' fill='%23c6a368'/%3E%3Ccircle cx='20' cy='20' r='4' fill='%23111f26'/%3E%3C/svg%3E" />
+  <link rel="preload" href="./backg/startBezPera.png" as="image" />
+  <link rel="preload" href="./backg/pero.png" as="image" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./intro.css" />
+  <script src="./invitation.config.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell" id="page-shell">
+    <main>
+      <section class="experience" aria-label="Интерактивное приглашение" data-state="start" id="experience">
+        <div class="scene" id="scene">
+          <img class="scene-image start-image" id="start-image" src="./backg/startBezPera.png" width="1672" height="941" alt="Старинная арка, город у реки и роза ветров на столе" fetchpriority="high" />
+          <video class="scene-video" id="transition-video" preload="auto" muted playsinline aria-hidden="true"><source src="./backg/fon.mp4" type="video/mp4" /></video>
+          <audio id="transition-audio" preload="auto" aria-hidden="true"><source src="./backg/fon2.mp3" type="audio/mpeg" /></audio>
+          <img class="scene-image end-image" id="end-image" src="./backg/end.png" width="1920" height="1080" alt="Открытая книга истории, памятники мировых цивилизаций и два пергаментных свитка" aria-hidden="true" />
+
+          <div class="start-content" id="start-content">
+            <div class="opening-title"><h1>Всемирная<br /><em>история</em></h1><div class="title-rule" aria-hidden="true"><span></span>✧<span></span></div><p>Парная работа</p></div>
+            <div class="intro-art">
+              <button class="feather-object" id="feather-button" type="button" aria-label="Нажмите на перо — начать путешествие" aria-describedby="feather-hint">
+                <img class="feather-image" id="feather-image" src="./backg/pero.png" width="1086" height="1448" alt="" draggable="false" fetchpriority="high" />
+              </button>
+            </div>
+            <p class="feather-hint" id="feather-hint">Нажмите на перо</p>
+          </div>
+
+          <div class="final-content" id="final-content" hidden>
+            <div class="final-heading"><span class="eyebrow">Для нашего куратора</span><h2>Приглашаем вас на парную работу<br /><em>по всемирной истории</em></h2><p>Небольшое путешествие по эпохам, событиям и цивилизациям</p></div>
+            <p class="banner-quote banner-left">Разные<br /><em>эпохи —</em><br />одна история</p>
+            <p class="banner-quote banner-right">Прошлое<br /><em>вдохновляет</em><br />будущее</p>
+          </div>
+        </div>
+        <div class="scene-footer" id="scene-footer" hidden>
+          <div class="final-footer" id="final-footer" hidden><span class="footer-aside">50 вопросов <span>·</span> бесконечность открытий</span><button class="antique-button" id="open-invitation"><span aria-hidden="true">✧</span> Открыть приглашение <span aria-hidden="true">✧</span></button><button class="replay-button" id="replay-button" aria-label="Вернуться к началу приглашения"><span aria-hidden="true">↺</span> К началу</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="letter-dialog" id="invitation-dialog" aria-labelledby="letter-title">
+    <button class="close-letter" id="close-letter" aria-label="Закрыть приглашение" autofocus>×</button>
+    <article class="letter">
+      <div class="letter-topline"><span>Личное приглашение</span><span aria-hidden="true">✧</span><span>Всемирная история</span></div>
+      <div class="letter-emblem" aria-hidden="true">H</div>
+      <p class="letter-salutation">Уважаемый куратор,</p>
+      <h2 id="letter-title">Приглашение на парную работу<br /> <em>по всемирной истории</em></h2>
+      <blockquote>«История превращает прошлое<br class="desktop-break" /> в разговор о настоящем.»</blockquote>
+      <div class="participants">
+        <span class="participant-name" id="first-participant">Еркеназ Кадырбекова</span>
+        <span class="ampersand">&</span>
+        <label class="sr-only" for="participant">Имя второго участника</label>
+        <input id="participant" class="inline-input name-input" placeholder="[Имя]" value="Калмағанбет Асель" maxlength="40" autocomplete="off" />
+      </div>
+      <div class="letter-rule" aria-hidden="true"><span></span>✧<span></span></div>
+      <div class="details-grid">
+        <div class="detail"><label for="event-date">Дата</label><input class="inline-input" id="event-date" placeholder="[ДАТА]" value="16 сентября 2026 (среда)" maxlength="60" autocomplete="off" /></div>
+        <div class="detail"><label for="event-time">Время</label><input class="inline-input" id="event-time" placeholder="[ВРЕМЯ]" value="20:00" maxlength="40" autocomplete="off" /></div>
+        <div class="detail"><span class="detail-label">Формат</span><p>Google Meet</p></div>
+        <div class="detail"><span class="detail-label">Продолжительность</span><p>Не менее 1 часа</p></div>
+        <div class="detail detail-wide"><span class="detail-label">Тема нашей встречи</span><p>50 вопросов по материалам зачёта</p></div>
+      </div>
+      <p class="letter-body">Приглашаем Вас присоединиться к нашей парной работе по всемирной истории. Будем повторять знания, обсуждать ключевые темы, задавать друг другу вопросы и вместе путешествовать сквозь эпохи.</p>
+      <a class="antique-button meet-button" id="join-meet" href="#meet-link" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></svg>Присоединиться к Google Meet<span aria-hidden="true">↗</span></a>
+      <div class="link-editor"><label for="meet-link">Ссылка на нашу встречу</label><div class="link-input-row"><input id="meet-link" type="url" placeholder="https://meet.google.com/…" spellcheck="false" autocomplete="off" aria-describedby="link-status" /><button type="button" id="copy-link" aria-label="Скопировать ссылку Google Meet" title="Скопировать ссылку"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div><p class="link-status" id="link-status" role="status">Вставьте ссылку Google Meet, чтобы присоединиться.</p></div>
+      <p class="letter-signoff">До встречи на страницах истории!</p>
+    </article>
+  </dialog>
+  <p class="sr-only" id="experience-status" role="status" aria-live="polite"></p>
+  <noscript><div class="noscript-note">Для воспроизведения анимации и открытия приглашения включите JavaScript в браузере.</div></noscript>
+</body>
+</html>

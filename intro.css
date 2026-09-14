@@ -1,0 +1,164 @@
+/* Fullscreen scene. The invitation letter keeps its existing styles.css theme. */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.page-shell { width: 100%; max-width: none; margin: 0; }
+.experience { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; padding: 0; overflow: hidden; }
+#experience-status { position: fixed; top: 0; left: 0; margin: 0; }
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+.scene-image, .scene-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.scene-image { pointer-events: none; }
+.scene-video { z-index: 3; opacity: 0; transition: opacity 160ms linear; pointer-events: none; }
+.end-image { z-index: 4; transition: opacity 700ms ease-in-out; }
+.start-content { z-index: 2; background: none; opacity: 1; transition: opacity 160ms linear; }
+
+/* Same cover geometry as the background, so the nib stays above its compass. */
+.intro-art {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100vw, calc(100vh * 1672 / 941));
+  height: max(100vh, calc(100vw * 941 / 1672));
+  width: max(100vw, calc(100dvh * 1672 / 941));
+  height: max(100dvh, calc(100vw * 941 / 1672));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.feather-object {
+  position: absolute;
+  left: 34.5%;
+  top: 6.8%;
+  width: 31.5%;
+  height: auto;
+  aspect-ratio: 1086 / 1448;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  cursor: default;
+  pointer-events: auto;
+  animation: feather-levitate 2.9s ease-in-out infinite;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.feather-object:focus-visible { outline: none; box-shadow: none; }
+.feather-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: 45.3% 96.5%;
+  filter: drop-shadow(0 0 0 rgba(255,205,90,0));
+  transition: filter 300ms ease, transform 300ms ease;
+  pointer-events: none;
+}
+.feather-object.is-hovered { cursor: pointer; }
+.feather-object.is-hovered .feather-image,
+.feather-object:focus-visible .feather-image {
+  filter: drop-shadow(0 0 7px rgba(255,205,90,.8)) drop-shadow(0 0 18px rgba(255,180,40,.55));
+  transform: scale(1.025);
+}
+.feather-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(3.5%, env(safe-area-inset-bottom));
+  margin: 0;
+  color: #49341f;
+  text-align: center;
+  font: 500 clamp(15px, 1.2vw, 21px) var(--serif);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 9px #fff0cd;
+  pointer-events: none;
+  animation: hint-breathe 3.6s ease-in-out infinite;
+}
+.opening-title { z-index: 1; top: 15%; left: 15%; width: 29%; pointer-events: none; user-select: none; }
+.opening-title h1 { font-size: clamp(38px, 4.5vw, 85px); }
+
+[data-state="starting"] .opening-title,
+[data-state="starting"] .feather-hint { opacity: 0; }
+[data-state="starting"] .feather-object { animation-play-state: paused; }
+[data-state="starting"] .feather-image { transform: none; filter: none; }
+[data-state="playing"] .start-content,
+[data-state="ending"] .start-content,
+[data-state="final"] .start-content { opacity: 0; pointer-events: none; }
+[data-state="playing"] .feather-object,
+[data-state="ending"] .feather-object,
+[data-state="final"] .feather-object { pointer-events: none; }
+[data-state="playing"] .scene-video,
+[data-state="ending"] .scene-video,
+[data-state="final"] .scene-video { opacity: 1; }
+[data-state="ending"] .end-image,
+[data-state="final"] .end-image { opacity: 1; }
+
+/* End artwork stays fullscreen; familiar invitation UI appears after the fade. */
+.final-content { z-index: 5; animation: reveal-content 850ms ease both; }
+.final-heading { top: 3%; }
+.final-heading p { font-size: clamp(12px, .9vw, 16px); }
+.banner-quote { width: max(10vw, calc(10dvh * 16 / 9)); }
+.banner-left { left: calc(50% - max(42.3vw, calc(42.3dvh * 16 / 9))); }
+.banner-right { right: calc(50% - max(42.3vw, calc(42.3dvh * 16 / 9))); }
+.scene-footer {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 38px 3.5% max(22px, env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, #0c171ed9);
+  animation: reveal-content 850ms ease both;
+}
+.final-footer { min-height: 52px; padding: 0; animation: none; }
+.footer-aside, .replay-button { color: #e2ceb0; }
+.footer-aside { left: 3.5%; }
+.replay-button { right: 3.5%; }
+
+@keyframes feather-levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes hint-breathe { 0%, 100% { opacity: .55; } 50% { opacity: .9; } }
+
+@media (max-aspect-ratio: 4/3) {
+  .opening-title { left: 5%; top: 8%; width: 39%; }
+  .final-heading { left: 12%; width: 76%; }
+  .banner-quote { top: auto; bottom: 18%; width: 24%; padding: 9px; background: #f3e0bde8; border-block: 1px solid #ab814d7a; }
+  .banner-left { left: 4%; }
+  .banner-right { right: 4%; }
+}
+@media (max-width: 700px) {
+  .opening-title { left: 2%; top: 3%; width: 54%; }
+  .opening-title h1 { font-size: clamp(32px, 8.4vw, 49px); }
+  .opening-title p { font-size: 22px; }
+  .feather-hint { bottom: 4%; font-size: 15px; }
+  .final-heading { left: 5%; top: 3%; width: 90%; }
+  .final-heading p { font-size: 14px; }
+  .banner-quote { bottom: 17%; width: 40%; font-size: 18px; }
+  .scene-footer { min-height: 108px; padding: 28px 15px max(18px, env(safe-area-inset-bottom)); }
+  .final-footer { padding-bottom: 22px; }
+  .replay-button { right: 50%; bottom: 14px; transform: translateX(50%); }
+}
+@media (min-aspect-ratio: 2/1) {
+  .opening-title { top: 9%; }
+  .opening-title h1 { font-size: clamp(38px, 7vh, 75px); }
+  .final-heading { top: 2%; padding: 5px; background: radial-gradient(ellipse, #f4e2c4e8, transparent 74%); }
+  .final-heading h2 { font-size: clamp(23px, 4vh, 38px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feather-object, .feather-hint { animation: none; }
+  .scene-video, .end-image, .start-content, .feather-image { transition: none; }
+}
