@@ -4,9 +4,13 @@
   const experience = $('experience');
   const video = $('transition-video');
   const soundtrack = $('transition-audio');
+  const backgroundMusic = $('background-audio');
   const BG_VOLUME = 0.15;
+  const MUSIC_VOLUME = 0.08;
   let soundContext;
   let soundGain;
+  let musicGain;
+  let fadeTimer;
   const dialog = $('invitation-dialog');
   const feather = $('feather-button');
   const featherImage = $('feather-image');
@@ -26,10 +30,19 @@
     else soundtrack.volume = v;
   }
   function stopSound() {
+    clearInterval(fadeTimer);
     soundtrack.pause();
   }
+  function fadeSound() {
+    const progress = Math.max(0, Math.min(1, (soundtrack.currentTime - 8) / 2));
+    setVolume(BG_VOLUME * (1 - progress));
+    if (progress === 1 || soundtrack.ended) stopSound();
+  }
   function startSound() {
+    stopSound();
+    soundtrack.loop = false;
     soundtrack.currentTime = 0;
+    backgroundMusic.currentTime = 0;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!soundContext && AudioContext) {
       try {
@@ -37,12 +50,21 @@
         const source = soundContext.createMediaElementSource(soundtrack);
         soundGain = soundContext.createGain();
         source.connect(soundGain).connect(soundContext.destination);
+        const musicSource = soundContext.createMediaElementSource(backgroundMusic);
+        musicGain = soundContext.createGain();
+        musicSource.connect(musicGain).connect(soundContext.destination);
       } catch { /* Fall back to media volume when Web Audio is unavailable. */ }
     }
     setVolume(BG_VOLUME);
+    if (musicGain) musicGain.gain.value = MUSIC_VOLUME;
+    else backgroundMusic.volume = MUSIC_VOLUME;
     soundContext?.resume().catch(() => {});
     soundtrack.play().catch(() => {});
+    backgroundMusic.play().catch(() => {});
+    fadeTimer = setInterval(fadeSound, 50);
   }
+  soundtrack.addEventListener('timeupdate', fadeSound);
+  soundtrack.addEventListener('ended', stopSound);
 
   // Read the original PNG alpha only for hit testing. The displayed file is unchanged.
   function prepareFeatherHitArea() {
@@ -97,6 +119,7 @@
     clearTimeout(stallTimer);
     state = 'ending';
     video.pause();
+    stopSound();
     if (frameCallback !== undefined) video.cancelVideoFrameCallback?.(frameCallback);
     $('start-content').setAttribute('aria-hidden', 'true');
     $('start-content').inert = true;
@@ -158,6 +181,8 @@
     state = 'start';
     video.pause();
     stopSound();
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
     soundtrack.currentTime = 0;
     video.currentTime = 0;
     experience.dataset.state = state;
